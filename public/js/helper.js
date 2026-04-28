@@ -7,6 +7,7 @@ export const getWeather = async (city) => {
     console.log('finalResponse', finalResponse);
 
     let result = {
+        city : finalResponse.name,
         temp :finalResponse.main.temp,
         tempmin:finalResponse.main.temp_min,
         tempmax:finalResponse.main.temp_max,

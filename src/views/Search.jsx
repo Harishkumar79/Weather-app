@@ -4,26 +4,32 @@ import SendIcon from '@mui/icons-material/Send';
 import { useState } from 'react';
 import { getWeather } from '../../public/js/helper';
 
-export default function Search() {
+export default function Search({ updateInfo, errInfo }) {
 
-    const [city , setCity] = useState("");
+    const [city, setCity] = useState("");
 
-    let handleInpChange = (e) =>{
+    let handleInpChange = (e) => {
         setCity(e.target.value);
     }
 
-    let handleFormSubmit = (e) => {
+    let handleFormSubmit = async (e) => {
         e.preventDefault();
-        getWeather(city);
-        console.log('submit call');
-        setCity("");
+        try {
+            let newInfo = await getWeather(city);
+            updateInfo(newInfo);
+            errInfo(false);
+            setCity("");
+        } catch (error) {
+            console.log(error);
+            errInfo(true);
+        }
     }
 
     return (
         <form onSubmit={handleFormSubmit}>
             <TextField id="outlined-basic" label="Outlined" variant="outlined" value={city} onChange={handleInpChange} required />
-            <br/>
-            <br/>
+            <br />
+            <br />
             <Button variant="contained" endIcon={<SendIcon />} type='submit'>
                 Search
             </Button>
